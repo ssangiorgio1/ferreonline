@@ -29,7 +29,7 @@ app.post('/api/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const query = `
-      INSERT INTO clien (nombre_apellido, direccion, telefono, correo, contrasena)
+      INSERT INTO clien (nombre_apellido, direccion, telefono, correo, contraseña)
       VALUES ($1, $2, $3, $4, $5)
       RETURNING id;
     `;
