@@ -1,19 +1,31 @@
 import express from 'express';
+import cors from 'cors';
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 
 dotenv.config();
 
-const router = express.Router();
+const app = express();
+
+// ⚠️ Reemplazá esto si tu frontend está en otra URL:
+const CLIENT_ORIGIN = 'https://ferreonline.vercel.app';
+
+app.use(cors({ origin: CLIENT_ORIGIN }));
+app.use(express.json());
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
 });
 
+// Ruta de prueba para verificar que el servidor esté funcionando
+app.get('/api', (req, res) => {
+  res.send('API funcionando correctamente 🚀');
+});
+
 // Ruta POST para registrar cliente
-router.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
   const { name, address, phone, email, password } = req.body;
 
   if (!name || !address || !phone || !email || !password) {
@@ -39,4 +51,8 @@ router.post('/register', async (req, res) => {
   }
 });
 
-export default router;
+// Inicializar servidor
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en puerto ${PORT}`);
+});
