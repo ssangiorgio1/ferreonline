@@ -1,15 +1,11 @@
 import express from 'express';
-import cors from 'cors';
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 
 dotenv.config();
 
-const app = express();
-
-app.use(cors());
-app.use(express.json());
+const router = express.Router();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -17,7 +13,7 @@ const pool = new Pool({
 });
 
 // Ruta POST para registrar cliente
-app.post('/api/register', async (req, res) => {
+router.post('/register', async (req, res) => {
   const { name, address, phone, email, password } = req.body;
 
   if (!name || !address || !phone || !email || !password) {
@@ -25,7 +21,6 @@ app.post('/api/register', async (req, res) => {
   }
 
   try {
-    // Hashear la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const query = `
@@ -44,7 +39,4 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
-});
+export default router;
