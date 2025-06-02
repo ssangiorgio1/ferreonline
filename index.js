@@ -10,14 +10,21 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+// ✅ CORS configurado para permitir el frontend de Vercel
+const corsOptions = {
+  origin: 'https://ferreonline.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 // ✅ Configuración MercadoPago
 const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
 const preferenceClient = new Preference(client);
 
-// 🛒 Rutas de productos
+// 🛒 Rutas de productos y clientes
 app.use('/api/productos', productosRoutes);
 app.use('/api/clientes', serverRoutes);
 
