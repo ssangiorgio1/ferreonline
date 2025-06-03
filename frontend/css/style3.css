@@ -693,27 +693,89 @@ body {
   }
 }
 
-@media (max-width: 480px) {
+/* Responsive Design Mejorado */
+
+/* Tablets grandes (1024px y menos) */
+@media (max-width: 1024px) {
   .login-main {
-    padding: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .login-wrapper {
+    max-width: 900px;
   }
   
   .login-info {
-    padding: 1.5rem;
+    padding: 2.5rem;
   }
   
   .welcome-title {
-    font-size: 1.75rem;
-    flex-direction: column;
-    text-align: center;
+    font-size: 2.2rem;
   }
   
   .login-form-section {
-    padding: 1.5rem;
+    padding: 2.5rem;
   }
   
-  .form-container {
-    max-width: none;
+  .form-header h2 {
+    font-size: 1.8rem;
+  }
+}
+
+/* Tablets (768px y menos) */
+@media (max-width: 768px) {
+  .header-container {
+    padding: 1rem;
+  }
+  
+  .login-main {
+    padding: 1rem;
+    margin-top: 60px;
+  }
+  
+  .login-wrapper {
+    grid-template-columns: 1fr;
+    margin: 0;
+    border-radius: var(--radius-lg);
+  }
+  
+  .login-info {
+    padding: 2rem;
+    order: 2;
+  }
+  
+  .welcome-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .features-list {
+    gap: 1.5rem;
+  }
+  
+  .feature-item {
+    padding: 1.25rem;
+  }
+  
+  .feature-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.8rem;
+  }
+  
+  .login-form-section {
+    padding: 2rem;
+    order: 1;
+  }
+  
+  .form-header h2 {
+    font-size: 1.75rem;
   }
   
   .form-options {
@@ -726,11 +788,253 @@ body {
     gap: 0.5rem;
   }
   
+  .notification {
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+  }
+}
+
+/* Móviles grandes (480px y menos) */
+@media (max-width: 480px) {
   .header-container {
-    padding: 1rem;
+    padding: 0.75rem;
+    flex-direction: column;
+    gap: 0.75rem;
   }
   
   .header-logo {
+    order: -1;
+  }
+  
+  .login-main {
+    padding: 0.75rem;
+    margin-top: 100px;
+  }
+  
+  .login-info {
+    padding: 1.5rem;
+  }
+  
+  .welcome-title {
+    font-size: 1.75rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .features-list {
+    gap: 1rem;
+  }
+  
+  .feature-item {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.6rem;
+  }
+  
+  .feature-text h3 {
+    font-size: 1rem;
+  }
+  
+  .feature-text p {
+    font-size: 0.85rem;
+  }
+  
+  .login-form-section {
+    padding: 1.5rem;
+  }
+  
+  .form-container {
+    max-width: none;
+  }
+  
+  .form-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .form-header p {
+    font-size: 0.9rem;
+  }
+  
+  .form-input {
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .submit-btn {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .social-btn {
+    padding: 0.875rem;
+    font-size: 0.95rem;
+  }
+  
+  .signup-link {
+    font-size: 0.9rem;
+  }
+  
+  .loading-content {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+}
+
+/* Móviles muy pequeños (360px y menos) */
+@media (max-width: 360px) {
+  .login-main {
+    padding: 0.5rem;
+  }
+  
+  .login-info {
+    padding: 1rem;
+  }
+  
+  .welcome-title {
+    font-size: 1.5rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 0.95rem;
+  }
+  
+  .feature-item {
+    padding: 0.75rem;
+  }
+  
+  .login-form-section {
+    padding: 1rem;
+  }
+  
+  .form-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .input-group {
+    gap: 0.4rem;
+  }
+  
+  .form-input {
+    padding: 0.75rem 0.875rem;
+  }
+  
+  .submit-btn {
+    padding: 0.875rem 1.25rem;
+  }
+}
+
+/* Landscape móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+  .login-main {
+    margin-top: 60px;
+    padding: 1rem;
+  }
+  
+  .login-wrapper {
+    grid-template-columns: 1fr 1fr;
+    min-height: auto;
+  }
+  
+  .login-info {
+    padding: 1.5rem;
+  }
+  
+  .welcome-title {
+    font-size: 1.5rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .features-list {
+    gap: 1rem;
+  }
+  
+  .feature-item {
+    padding: 0.75rem;
+  }
+  
+  .login-form-section {
+    padding: 1.5rem;
+  }
+  
+  .form-header {
+    margin-bottom: 1rem;
+  }
+  
+  .form-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .login-form {
+    gap: 1rem;
+  }
+}
+
+/* Mejoras para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .back-page:hover {
+    transform: none;
+  }
+  
+  .submit-btn:hover,
+  .social-btn:hover {
+    transform: none;
+  }
+  
+  .submit-btn:hover .btn-icon {
+    transform: none;
+  }
+  
+  .create-account-btn:hover .link-icon {
+    transform: none;
+  }
+  
+  .password-toggle:hover {
+    background: none;
+  }
+}
+
+/* Animaciones reducidas */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .submit-btn::before {
     display: none;
+  }
+}
+
+/* Modo alto contraste */
+@media (prefers-contrast: high) {
+  :root {
+    --border-color: #000000;
+    --text-light: #666666;
+  }
+  
+  .form-input {
+    border-width: 3px;
+  }
+  
+  .submit-btn {
+    border: 2px solid var(--primary-dark);
   }
 }

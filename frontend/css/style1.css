@@ -755,7 +755,33 @@ body {
   background: var(--background-light);
 }
 
-/* Responsive Design */
+/* Responsive Design Mejorado */
+
+/* Tablets grandes (1024px y menos) */
+@media (max-width: 1024px) {
+  .producto-main {
+    padding: 1.5rem;
+  }
+  
+  .producto-wrapper {
+    gap: 3rem;
+    padding: 1.5rem;
+  }
+  
+  .imagen-principal {
+    height: 400px;
+  }
+  
+  .producto-titulo {
+    font-size: 1.8rem;
+  }
+  
+  .precio-actual {
+    font-size: 2.2rem;
+  }
+}
+
+/* Tablets (768px y menos) */
 @media (max-width: 768px) {
   .header-container {
     padding: 1rem;
@@ -772,6 +798,7 @@ body {
   
   .breadcrumb-container {
     padding: 0 1rem;
+    flex-wrap: wrap;
   }
   
   .producto-main {
@@ -796,8 +823,23 @@ body {
     font-size: 2rem;
   }
   
+  .precio-info {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
   .acciones-producto {
     flex-direction: column;
+  }
+  
+  .cantidad-selector {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  
+  .cantidad-controls {
+    flex: 1;
+    min-width: 150px;
   }
   
   .notification {
@@ -809,8 +851,17 @@ body {
   .image-modal {
     padding: 1rem;
   }
+  
+  .modal-close {
+    top: -30px;
+    right: -10px;
+    width: 35px;
+    height: 35px;
+    font-size: 1.3rem;
+  }
 }
 
+/* Móviles grandes (480px y menos) */
 @media (max-width: 480px) {
   .header-container {
     flex-direction: column;
@@ -822,19 +873,203 @@ body {
     margin-top: 0;
   }
   
+  .breadcrumb-container {
+    font-size: 0.8rem;
+    gap: 0.25rem;
+  }
+  
+  .breadcrumb-current {
+    display: none;
+  }
+  
+  .producto-main {
+    padding: 0.75rem;
+  }
+  
   .producto-wrapper {
     padding: 1rem;
+    gap: 1.5rem;
+  }
+  
+  .imagen-principal {
+    height: 250px;
+  }
+  
+  .zoom-indicator {
+    font-size: 0.8rem;
+  }
+  
+  .producto-titulo {
+    font-size: 1.3rem;
+  }
+  
+  .precio-actual {
+    font-size: 1.8rem;
+  }
+  
+  .precio-beneficios {
+    gap: 0.25rem;
+  }
+  
+  .beneficio {
+    font-size: 0.8rem;
+  }
+  
+  .descripcion-section h3 {
+    font-size: 1.1rem;
+  }
+  
+  .producto-descripcion {
+    font-size: 0.9rem;
+  }
+  
+  .cantidad-selector {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
   
   .cantidad-controls {
-    flex: 1;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .btn-agregar-carrito {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .btn-favorito {
+    padding: 0.875rem;
+  }
+  
+  .producto-garantia {
+    padding: 1rem;
+  }
+  
+  .garantia-item {
+    font-size: 0.8rem;
+  }
+  
+  .btn-volver {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.95rem;
   }
   
   .error-content {
     padding: 2rem 1rem;
+    margin: 1rem;
   }
   
   .error-actions {
     flex-direction: column;
+  }
+  
+  .modal-content {
+    max-width: 95%;
+    max-height: 85%;
+  }
+  
+  .modal-close {
+    top: -25px;
+    right: -5px;
+    width: 30px;
+    height: 30px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Móviles muy pequeños (360px y menos) */
+@media (max-width: 360px) {
+  .producto-wrapper {
+    padding: 0.75rem;
+  }
+  
+  .imagen-principal {
+    height: 200px;
+  }
+  
+  .producto-titulo {
+    font-size: 1.2rem;
+  }
+  
+  .precio-actual {
+    font-size: 1.6rem;
+  }
+  
+  .producto-info {
+    gap: 1.25rem;
+  }
+  
+  .compra-section {
+    gap: 1rem;
+  }
+  
+  .producto-garantia {
+    padding: 0.75rem;
+  }
+}
+
+/* Landscape móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+  .producto-wrapper {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  
+  .imagen-principal {
+    height: 250px;
+  }
+  
+  .producto-titulo {
+    font-size: 1.3rem;
+  }
+  
+  .precio-actual {
+    font-size: 1.8rem;
+  }
+  
+  .producto-info {
+    gap: 1rem;
+  }
+  
+  .compra-section {
+    gap: 1rem;
+  }
+}
+
+/* Mejoras para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .imagen-principal:hover {
+    transform: none;
+  }
+  
+  .btn-agregar-carrito:hover,
+  .btn-favorito:hover,
+  .btn-volver:hover {
+    transform: none;
+  }
+  
+  .cantidad-btn:hover {
+    background: var(--background-light);
+    color: var(--text-primary);
+  }
+  
+  .nav-link::after {
+    display: none;
+  }
+}
+
+/* Animaciones reducidas */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .producto-main {
+    opacity: 1;
+    transform: none;
   }
 }
