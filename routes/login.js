@@ -8,27 +8,40 @@ router.post('/', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ message: 'Faltan email o contraseña' });
+    return res.status(400).json({ success: false, message: 'Faltan email o contraseña' });
   }
 
   try {
+    // Buscar usuario por correo
     const result = await pool.query('SELECT * FROM clien WHERE correo = $1', [email]);
 
     if (result.rows.length === 0) {
-      return res.status(401).json({ message: 'Usuario no encontrado' });
+      return res.status(401).json({ success: false, message: 'Correo no registrado' });
     }
 
     const usuario = result.rows[0];
+
+    // Comparar contraseña hasheada
     const passwordCorrecta = await bcrypt.compare(password, usuario.contraseña);
 
     if (!passwordCorrecta) {
-      return res.status(401).json({ message: 'Contraseña incorrecta' });
+      return res.status(401).json({ success: false, message: 'Contraseña incorrecta' });
     }
 
-    res.json({ message: 'Login exitoso', cliente: usuario });
+    // Si todo es correcto
+    res.status(200).json({
+      success: true,
+      message: 'Login exitoso',
+      cliente: {
+        id: usuario.id,
+        nombre_apellido: usuario.nombre_apellido,
+        correo: usuario.correo
+      }
+    });
+
   } catch (err) {
     console.error('Error al iniciar sesión:', err);
-    res.status(500).json({ message: 'Error interno del servidor' });
+    res.status(500).json({ success: false, message: 'Error interno del servidor' });
   }
 });
 
