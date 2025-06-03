@@ -1,30 +1,26 @@
 import express from 'express';
 import { pool } from '../db.js';
-import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
+// Ruta para registrar un nuevo cliente
 router.post('/', async (req, res) => {
-  const { name, address, phone, email, password } = req.body;
+  const { nombre_apellido, direccion, telefono, correo, contraseña } = req.body;
 
-  if (!name || !address || !phone || !email || !password) {
-    return res.status(400).json({ success: false, message: 'Faltan datos obligatorios' });
+  if (!nombre_apellido || !direccion || !telefono || !correo || !contraseña) {
+    return res.status(400).json({ error: 'Todos los campos son obligatorios' });
   }
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const result = await pool.query(
-      `INSERT INTO clien (nombre_apellido, direccion, telefono, correo, contraseña)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING id`,
-      [name, address, phone, email, hashedPassword]
+      'INSERT INTO clien (nombre_apellido, direccion, telefono, correo, contraseña) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [nombre_apellido, direccion, telefono, correo, contraseña]
     );
 
-    res.status(201).json({ success: true, id: result.rows[0].id });
+    res.status(201).json({ message: 'Cliente registrado con éxito', cliente: result.rows[0] });
   } catch (err) {
     console.error('Error al registrar cliente:', err);
-    res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    res.status(500).json({ error: 'Error al registrar el cliente' });
   }
 });
 
