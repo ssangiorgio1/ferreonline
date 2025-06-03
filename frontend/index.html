@@ -7,6 +7,27 @@
   <link rel="stylesheet" href="./css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cliente = JSON.parse(localStorage.getItem('cliente'));
+    if (cliente) {
+      document.getElementById('bienvenidaUsuario').textContent = `Hola, ${cliente.nombre_apellido}!`;
+
+      // Ocultar botón de iniciar sesión
+      const loginBtn = document.querySelector('.login-button');
+      if (loginBtn) loginBtn.style.display = 'none';
+
+     
+    }
+  });
+
+  function cerrarSesion() {
+    localStorage.removeItem('cliente');
+    localStorage.removeItem('userEmail');
+    window.location.href = 'login.html';
+  }
+</script>
+
 <body>
 
   <!-- Header -->
@@ -24,6 +45,11 @@
         <a href="#contacto" class="nav-link">Contacto</a>
       </nav>
       <div class="header-right">
+        <!-- Usuario logueado -->
+<div id="usuarioSesion" class="usuario-sesion" style="margin-right: 1rem;">
+  <span id="bienvenidaUsuario" style="margin-right: 0.5rem;"></span>
+  <button onclick="cerrarSesion()" class="cerrar-sesion-btn">Cerrar sesión</button>
+</div>
         <a href="./login.html" class="login-button">
           <span class="login-icon">👤</span>
           Iniciar Sesión

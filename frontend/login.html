@@ -6,7 +6,7 @@
   <title>Iniciar Sesión | FerreOnline</title>
   <link rel="stylesheet" href="./css/style3.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="./js/server.js"></script>
+  
 </head>
 <body>
 
@@ -267,55 +267,58 @@
       return isValid;
     }
 
-    document.getElementById('loginForm').addEventListener('submit', async function(event) {
-      event.preventDefault();
+    
+document.getElementById('loginForm').addEventListener('submit', async function(event) {
+  event.preventDefault();
 
-      if (!validateForm()) {
-        return;
-      }
+  if (!validateForm()) return;
 
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const submitBtn = document.getElementById('submitBtn');
-      
-      // Mostrar estado de carga
-      showLoading();
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span class="spinner-small"></span><span>Ingresando...</span>';
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const submitBtn = document.getElementById('submitBtn');
 
-      try {
-        const response = await fetch('https://ferreonline-production.up.railway.app/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
+  showLoading();
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span class="spinner-small"></span><span>Ingresando...</span>';
 
-        const data = await response.json();
-
-        if (data.success) {
-          showNotification('¡Bienvenido!', 'Inicio de sesión exitoso', 'success');
-          
-          // Guardar datos de sesión si "recordarme" está marcado
-          if (document.getElementById('rememberMe').checked) {
-            localStorage.setItem('userEmail', email);
-          }
-          
-          // Redirigir después de un breve delay
-          setTimeout(() => {
-            window.location.href = "index.html";
-          }, 1500);
-        } else {
-          showNotification('Error de acceso', data.message || 'Credenciales incorrectas', 'error');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        showNotification('Error de conexión', 'No se pudo conectar con el servidor. Intenta nuevamente.', 'error');
-      } finally {
-        hideLoading();
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span class="btn-text">Ingresar</span><span class="btn-icon">→</span>';
-      }
+  try {
+    const response = await fetch('https://ferreonline-production.up.railway.app/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
     });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      showNotification('Error de acceso', data.message || 'Credenciales incorrectas', 'error');
+      return;
+    }
+
+    // Guardar datos del cliente
+    localStorage.setItem('cliente', JSON.stringify(data.cliente));
+    if (document.getElementById('rememberMe').checked) {
+      localStorage.setItem('userEmail', email);
+    }
+
+    showNotification('¡Bienvenido!', 'Inicio de sesión exitoso', 'success');
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1500);
+
+  } catch (error) {
+    console.error('Error:', error);
+    showNotification('Error de conexión', 'No se pudo conectar con el servidor.', 'error');
+  } finally {
+    hideLoading();
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<span class="btn-text">Ingresar</span><span class="btn-icon">→</span>';
+  }
+});
+
+
+
 
     // Cargar email guardado si existe
     document.addEventListener('DOMContentLoaded', function() {
