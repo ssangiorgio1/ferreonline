@@ -11,13 +11,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ CORS configurado para permitir el frontend de Vercel
-const corsOptions = {
+// ✅ CORS completo para permitir el frontend desde Vercel con preflight
+app.use(cors({
   origin: 'https://ferreonline.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-};
-app.use(cors(corsOptions));
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+app.options('*', cors()); // Habilita respuestas a preflight
 
 app.use(express.json());
 
@@ -28,7 +29,7 @@ const preferenceClient = new Preference(client);
 // 🛒 Rutas de productos y clientes
 app.use('/api/productos', productosRoutes);
 app.use('/api/clientes', serverRoutes);
-app.use('/api/register', registerRoutes); // ✅ ahora sí está bien ubicada
+app.use('/api/register', registerRoutes);
 
 // 🧩 Ruta para crear preferencia de pago
 app.post('/api/crear-preferencia', async (req, res) => {
