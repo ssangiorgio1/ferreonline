@@ -234,7 +234,7 @@
 });
 
 
-    async function pagarConMercadoPago() {
+    async function pagarConMercadoPago(cliente) {
       const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
       if (!carrito.length) {
