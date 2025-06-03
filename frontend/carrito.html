@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carrito | FerreOnline</title>
+  <link rel="stylesheet" href="./css/style2.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="main-header">
+    <div class="header-container">
+      <a href="./login.html" class="login-button">
+        <span class="login-icon">👤</span>
+        Iniciar Sesión
+      </a>
+      <h1 class="site-title">
+        <span class="logo-icon">🔧</span>
+        <strong>FerreOnline</strong>
+      </h1>
+      <a href="carrito.html" class="cart-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V17C17 18.1 16.1 19 15 19H9C7.9 19 7 18.1 7 17V13M17 13H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span id="contadorCarrito" class="contador"></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Contenedor del carrito -->
+  <div class="carrito-container">
+    <div class="carrito-header">
+      <h1>
+        <span class="carrito-icon">🛒</span>
+        Mi Carrito
+      </h1>
+      <button id="limpiarCarrito" class="btn-limpiar" onclick="limpiarCarrito()" style="display: none;">
+        <span>🗑️</span>
+        Vaciar carrito
+      </button>
+    </div>
+    
+    <div class="carrito-content">
+      <div class="productos-section">
+        <div id="productosCarrito"></div>
+      </div>
+      
+      <div class="resumen-section">
+        <div class="total-carrito">
+          <div class="resumen-detalles">
+            <div class="detalle-linea">
+              <span>Subtotal:</span>
+              <span id="subtotalCarrito">$0</span>
+            </div>
+            <div class="detalle-linea">
+              <span>Envío:</span>
+              <span class="envio-gratis">Gratis</span>
+            </div>
+            <hr class="resumen-divider">
+            <div class="detalle-linea total">
+              <span>Total:</span>
+              <span id="totalCarrito">$0</span>
+            </div>
+          </div>
+          
+          <button id="btnPagar" class="proceder-btn">
+            <span class="btn-icon">💳</span>
+            <span>Comprar</span>
+          </button>
+          
+          <div class="metodos-pago">
+            <p>Métodos de pago:</p>
+            <div class="pago-iconos">
+              <span>💳</span>
+              <span>🏦</span>
+              <span>📱</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="volver-section">
+    <a href="index.html" class="btn-volver">← Volver</a>
+  </div>
+
+  <!-- Notificación personalizada -->
+  <div id="customAlert" class="alert">
+    <div class="alert-content">
+      <span class="alert-icon">✅</span>
+      <span id="alertMessage">Producto eliminado del carrito!</span>
+      <button class="alert-close" onclick="cerrarNotificacion()">×</button>
+    </div>
+  </div>
+
+  <script>
+    function actualizarCarrito() {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const contenedor = document.getElementById('productosCarrito');
+      const totalCarrito = document.getElementById('totalCarrito');
+      const subtotalCarrito = document.getElementById('subtotalCarrito');
+      const btnLimpiar = document.getElementById('limpiarCarrito');
+
+      contenedor.innerHTML = '';
+
+      if (carrito.length === 0) {
+        contenedor.innerHTML = `
+          <div class="carrito-vacio">
+            <div class="vacio-icon">🛒</div>
+            <h2>Tu carrito está vacío</h2>
+            <p>¡Descubre nuestros productos y encuentra las mejores herramientas para tus proyectos!</p>
+            <a href="index.html#productos" class="btn-explorar">
+              <span>🔍</span>
+              Explorar productos
+            </a>
+          </div>
+        `;
+        totalCarrito.textContent = '$0';
+        subtotalCarrito.textContent = '$0';
+        btnLimpiar.style.display = 'none';
+        return;
+      }
+
+      btnLimpiar.style.display = 'flex';
+      let total = 0;
+
+      carrito.forEach(producto => {
+        const productoElemento = document.createElement('div');
+        productoElemento.className = 'producto-carrito';
+        productoElemento.innerHTML = `
+          <div class="producto-imagen-container">
+            <img src="${producto.imagen}" alt="${producto.nombre}" class="producto-imagen" onerror="this.src='/placeholder.svg?height=100&width=100'" />
+          </div>
+          <div class="producto-info">
+            <h2 class="producto-nombre">${producto.nombre}</h2>
+            <p class="producto-descripcion">${producto.descripcion || 'Sin descripción disponible'}</p>
+            <div class="producto-precio">
+              <span class="precio-unitario">$${producto.precio.toLocaleString()}</span>
+              <span class="precio-total">Total: $${(producto.precio * producto.cantidad).toLocaleString()}</span>
+            </div>
+          </div>
+          <div class="cantidad-controles">
+            <button class="cantidad-btn" onclick="cambiarCantidad(${producto.id}, 1)">+</button>
+            <span class="cantidad-display">${producto.cantidad}</span>
+            <button class="cantidad-btn" onclick="cambiarCantidad(${producto.id}, -1)">-</button>
+            <button class="btn-eliminar" onclick="eliminarProducto(${producto.id})">
+              <span>🗑️</span>
+              Eliminar
+            </button>
+          </div>
+        `;
+
+        contenedor.appendChild(productoElemento);
+        total += producto.precio * producto.cantidad;
+      });
+
+      totalCarrito.textContent = `$${total.toLocaleString()}`;
+      subtotalCarrito.textContent = `$${total.toLocaleString()}`;
+      
+      // Actualizar contador del header
+      const contadorCarrito = document.getElementById('contadorCarrito');
+      const totalCantidad = carrito.reduce((sum, prod) => sum + prod.cantidad, 0);
+      if (contadorCarrito) {
+        contadorCarrito.textContent = totalCantidad > 0 ? totalCantidad : '';
+        contadorCarrito.style.display = totalCantidad > 0 ? 'flex' : 'none';
+      }
+    }
+
+    function cambiarCantidad(id, cambio) {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const producto = carrito.find(p => p.id === id);
+
+      if (!producto) return;
+
+      producto.cantidad += cambio;
+      if (producto.cantidad <= 0) {
+        eliminarProducto(id);
+      } else {
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+        actualizarCarrito();
+      }
+    }
+
+    function eliminarProducto(id) {
+      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const producto = carrito.find(p => p.id === id);
+      carrito = carrito.filter(p => p.id !== id);
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      
+      mostrarNotificacion(`${producto?.nombre || 'Producto'} eliminado del carrito!`);
+      actualizarCarrito();
+    }
+
+    function limpiarCarrito() {
+      if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
+        localStorage.removeItem('carrito');
+        actualizarCarrito();
+        mostrarNotificacion('Carrito vaciado correctamente');
+      }
+    }
+
+    function mostrarNotificacion(mensaje) {
+      const alertElement = document.getElementById('customAlert');
+      const alertMessage = document.getElementById('alertMessage');
+      
+      alertMessage.textContent = mensaje;
+      alertElement.classList.add('show');
+
+      setTimeout(() => {
+        alertElement.classList.remove('show');
+      }, 3000);
+    }
+
+    function cerrarNotificacion() {
+      document.getElementById('customAlert').classList.remove('show');
+    }
+
+    actualizarCarrito();
+
+    document.getElementById('btnPagar').addEventListener('click', function () {
+      const usuario = localStorage.getItem('usuario');
+
+      if (!usuario) {
+        mostrarNotificacion('Debes iniciar sesión para continuar con la compra.');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1500);
+      } else {
+        pagarConMercadoPago();
+      }
+    });
+
+    async function pagarConMercadoPago() {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+      if (!carrito.length) {
+        mostrarNotificacion('Tu carrito está vacío. Agrega productos antes de pagar.');
+        return;
+      }
+
+      const btn = document.getElementById('btnPagar');
+      const textoOriginal = btn.innerHTML;
+      btn.innerHTML = '<span class="spinner"></span><span>Procesando...</span>';
+      btn.disabled = true;
+
+      const carritoLimpio = carrito.map(item => ({
+        nombre: item.nombre.trim(),
+        precio: Number(item.precio),
+        cantidad: Number(item.cantidad),
+      }));
+
+      try {
+        const response = await fetch('https://ferreonline-production.up.railway.app/api/crear-preferencia', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ carrito: carritoLimpio })
+        });
+
+        const data = await response.json();
+
+        if (data.init_point) {
+          mostrarNotificacion('Redirigiendo a Mercado Pago...');
+          setTimeout(() => {
+            window.location.href = data.init_point;
+          }, 1500);
+        } else {
+          throw new Error('No se recibió el enlace de pago');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        mostrarNotificacion('Error al conectar con Mercado Pago. Intenta nuevamente.');
+      } finally {
+        btn.innerHTML = textoOriginal;
+        btn.disabled = false;
+      }
+    }
+  </script>
+
+</body>
+</html>

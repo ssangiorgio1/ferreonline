@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Iniciar Sesión | FerreOnline</title>
+  <link rel="stylesheet" href="./css/style3.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="./js/server.js"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="main-header">
+    <div class="header-container">
+      <a href="index.html" class="back-page">
+        <span class="back-icon">←</span>
+        <span>Volver al inicio</span>
+      </a>
+      <div class="header-logo">
+        <span class="logo-icon">🔧</span>
+        <span class="logo-text">FerreOnline</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenedor principal -->
+  <main class="login-main">
+    <div class="login-wrapper">
+      
+      <!-- Lado izquierdo - Información -->
+      <div class="login-info">
+        <div class="info-content">
+          <h1 class="welcome-title">
+            <span class="welcome-icon">👋</span>
+            ¡Bienvenido de vuelta!
+          </h1>
+          <p class="welcome-subtitle">Accede a tu cuenta para continuar con tus compras y gestionar tus pedidos.</p>
+          
+          <div class="features-list">
+            <div class="feature-item">
+              <span class="feature-icon">🛒</span>
+              <div class="feature-text">
+                <h3>Carrito guardado</h3>
+                <p>Tus productos te esperan</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">📦</span>
+              <div class="feature-text">
+                <h3>Historial de pedidos</h3>
+                <p>Revisa tus compras anteriores</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">⭐</span>
+              <div class="feature-text">
+                <h3>Ofertas exclusivas</h3>
+                <p>Descuentos especiales para ti</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lado derecho - Formulario -->
+      <div class="login-form-section">
+        <div class="form-container">
+          <div class="form-header">
+            <h2>Iniciar Sesión</h2>
+            <p>Ingresa tus credenciales para acceder</p>
+          </div>
+
+          <form id="loginForm" class="login-form">
+            <div class="input-group">
+              <label for="email" class="input-label">
+                <span class="label-icon">📧</span>
+                Correo electrónico
+              </label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                class="form-input"
+                placeholder="tu@email.com"
+                required
+              >
+              <div class="input-error" id="emailError"></div>
+            </div>
+
+            <div class="input-group">
+              <label for="password" class="input-label">
+                <span class="label-icon">🔒</span>
+                Contraseña
+              </label>
+              <div class="password-input-container">
+                <input 
+                  type="password" 
+                  id="password" 
+                  name="password" 
+                  class="form-input"
+                  placeholder="Tu contraseña"
+                  required
+                >
+                <button type="button" class="password-toggle" onclick="togglePassword()">
+                  <span id="passwordToggleIcon">👁️</span>
+                </button>
+              </div>
+              <div class="input-error" id="passwordError"></div>
+            </div>
+
+            <div class="form-options">
+              <label class="checkbox-container">
+                <input type="checkbox" id="rememberMe">
+                <span class="checkmark"></span>
+                <span class="checkbox-text">Recordarme</span>
+              </label>
+              <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+              <span class="btn-text">Ingresar</span>
+              <span class="btn-icon">→</span>
+            </button>
+
+            <div class="form-divider">
+              <span>o</span>
+            </div>
+
+            
+
+            <div class="signup-link">
+              <span>¿No tienes cuenta?</span>
+              <a href="./sign_in.html" class="create-account-btn">
+                <span>Crear cuenta</span>
+                <span class="link-icon">→</span>
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Notificación -->
+  <div id="notification" class="notification">
+    <div class="notification-content">
+      <div class="notification-icon" id="notificationIcon">✅</div>
+      <div class="notification-text">
+        <div class="notification-title" id="notificationTitle">Éxito</div>
+        <div class="notification-message" id="notificationMessage">Mensaje</div>
+      </div>
+      <button class="notification-close" onclick="closeNotification()">×</button>
+    </div>
+  </div>
+
+  <!-- Loading overlay -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <p>Iniciando sesión...</p>
+    </div>
+  </div>
+
+  <script>
+    let isPasswordVisible = false;
+
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('passwordToggleIcon');
+      
+      isPasswordVisible = !isPasswordVisible;
+      
+      if (isPasswordVisible) {
+        passwordInput.type = 'text';
+        toggleIcon.textContent = '🙈';
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.textContent = '👁️';
+      }
+    }
+
+    function showNotification(title, message, type = 'success') {
+      const notification = document.getElementById('notification');
+      const titleElement = document.getElementById('notificationTitle');
+      const messageElement = document.getElementById('notificationMessage');
+      const iconElement = document.getElementById('notificationIcon');
+      
+      titleElement.textContent = title;
+      messageElement.textContent = message;
+      
+      // Cambiar icono según el tipo
+      switch(type) {
+        case 'success':
+          iconElement.textContent = '✅';
+          notification.className = 'notification success';
+          break;
+        case 'error':
+          iconElement.textContent = '❌';
+          notification.className = 'notification error';
+          break;
+        case 'warning':
+          iconElement.textContent = '⚠️';
+          notification.className = 'notification warning';
+          break;
+        default:
+          iconElement.textContent = '✅';
+          notification.className = 'notification success';
+      }
+      
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 4000);
+    }
+
+    function closeNotification() {
+      document.getElementById('notification').classList.remove('show');
+    }
+
+    function showLoading() {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function hideLoading() {
+      document.getElementById('loadingOverlay').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    function validateForm() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const emailError = document.getElementById('emailError');
+      const passwordError = document.getElementById('passwordError');
+      
+      let isValid = true;
+      
+      // Limpiar errores previos
+      emailError.textContent = '';
+      passwordError.textContent = '';
+      
+      // Validar email
+      if (!email) {
+        emailError.textContent = 'El correo electrónico es requerido';
+        isValid = false;
+      } else if (!validateEmail(email)) {
+        emailError.textContent = 'Ingresa un correo electrónico válido';
+        isValid = false;
+      }
+      
+      // Validar contraseña
+      if (!password) {
+        passwordError.textContent = 'La contraseña es requerida';
+        isValid = false;
+      } else if (password.length < 6) {
+        passwordError.textContent = 'La contraseña debe tener al menos 6 caracteres';
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      if (!validateForm()) {
+        return;
+      }
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const submitBtn = document.getElementById('submitBtn');
+      
+      // Mostrar estado de carga
+      showLoading();
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-small"></span><span>Ingresando...</span>';
+
+      try {
+        const response = await fetch('https://ferreonline-production.up.railway.app/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showNotification('¡Bienvenido!', 'Inicio de sesión exitoso', 'success');
+          
+          // Guardar datos de sesión si "recordarme" está marcado
+          if (document.getElementById('rememberMe').checked) {
+            localStorage.setItem('userEmail', email);
+          }
+          
+          // Redirigir después de un breve delay
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1500);
+        } else {
+          showNotification('Error de acceso', data.message || 'Credenciales incorrectas', 'error');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showNotification('Error de conexión', 'No se pudo conectar con el servidor. Intenta nuevamente.', 'error');
+      } finally {
+        hideLoading();
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="btn-text">Ingresar</span><span class="btn-icon">→</span>';
+      }
+    });
+
+    // Cargar email guardado si existe
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedEmail = localStorage.getItem('userEmail');
+      if (savedEmail) {
+        document.getElementById('email').value = savedEmail;
+        document.getElementById('rememberMe').checked = true;
+      }
+    });
+
+    // Validación en tiempo real
+    document.getElementById('email').addEventListener('blur', function() {
+      const email = this.value.trim();
+      const emailError = document.getElementById('emailError');
+      
+      if (email && !validateEmail(email)) {
+        emailError.textContent = 'Ingresa un correo electrónico válido';
+      } else {
+        emailError.textContent = '';
+      }
+    });
+
+    document.getElementById('password').addEventListener('input', function() {
+      const password = this.value;
+      const passwordError = document.getElementById('passwordError');
+      
+      if (password && password.length < 6) {
+        passwordError.textContent = 'La contraseña debe tener al menos 6 caracteres';
+      } else {
+        passwordError.textContent = '';
+      }
+    });
+  </script>
+
+</body>
+</html>

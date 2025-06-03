@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crear Cuenta | FerreOnline</title>
+  <link rel="stylesheet" href="./css/style3.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="main-header">
+    <div class="header-container">
+      <a href="index.html" class="back-page">
+        <span class="back-icon">←</span>
+        <span>Volver al inicio</span>
+      </a>
+      <div class="header-logo">
+        <span class="logo-icon">🔧</span>
+        <span class="logo-text">FerreOnline</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenedor principal -->
+  <main class="login-main">
+    <div class="login-wrapper">
+
+      <!-- Lado izquierdo -->
+      <div class="login-info">
+        <div class="info-content">
+          <h1 class="welcome-title">
+            <span class="welcome-icon">👋</span>
+            ¡Únete a FerreOnline!
+          </h1>
+          <p class="welcome-subtitle">Crea una cuenta para comenzar a comprar y disfrutar de nuestros beneficios.</p>
+
+          <div class="features-list">
+            <div class="feature-item">
+              <span class="feature-icon">🎁</span>
+              <div class="feature-text">
+                <h3>Promociones exclusivas</h3>
+                <p>Descuentos solo para registrados</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🛍️</span>
+              <div class="feature-text">
+                <h3>Compras rápidas</h3>
+                <p>Guarda tus datos y compra más rápido</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🚚</span>
+              <div class="feature-text">
+                <h3>Seguimiento de pedidos</h3>
+                <p>Monitorea tu entrega fácilmente</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lado derecho -->
+      <div class="login-form-section">
+        <div class="form-container">
+          <div class="form-header">
+            <h2>Crear Cuenta</h2>
+            <p>Completa el formulario para registrarte</p>
+          </div>
+
+          <form id="registerForm" class="login-form">
+<div class="input-group">
+  <label for="name" class="input-label">👤 Nombre completo</label>
+  <input type="text" id="name" name="name" class="form-input" placeholder="Tu nombre completo" required>
+  <div class="input-error" id="nameError"></div>
+</div>
+
+<div class="input-group">
+  <label for="email" class="input-label">📧 Correo electrónico</label>
+  <input type="email" id="email" name="email" class="form-input" placeholder="tu@email.com" required>
+  <div class="input-error" id="emailError"></div>
+</div>
+
+<div class="input-group">
+  <label for="phone" class="input-label">📱 Teléfono</label>
+  <input type="tel" id="phone" name="phone" class="form-input" placeholder="Ej: 3001234567" required>
+  <div class="input-error" id="phoneError"></div>
+</div>
+
+<div class="input-group">
+  <label for="address" class="input-label">🏠 Dirección</label>
+  <input type="text" id="address" name="address" class="form-input" placeholder="Tu dirección" required>
+  <div class="input-error" id="addressError"></div>
+</div>
+
+<div class="input-group">
+  <label for="password" class="input-label">🔒 Contraseña</label>
+  <div class="password-input-container">
+    <input type="password" id="password" name="password" class="form-input" placeholder="Crea una contraseña" required>
+    <button type="button" class="password-toggle" onclick="togglePassword()">
+      <span id="passwordToggleIcon">👁️</span>
+    </button>
+  </div>
+  <div class="input-error" id="passwordError"></div>
+</div>
+            <button type="submit" class="submit-btn" id="submitBtn">
+              <span class="btn-text">Registrarse</span>
+              <span class="btn-icon">→</span>
+            </button>
+
+            <div class="signup-link">
+              <span>¿Ya tienes cuenta?</span>
+              <a href="./login.html" class="create-account-btn">
+                <span>Iniciar sesión</span>
+                <span class="link-icon">→</span>
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Notificación -->
+  <div id="notification" class="notification">
+    <div class="notification-content">
+      <div class="notification-icon" id="notificationIcon">✅</div>
+      <div class="notification-text">
+        <div class="notification-title" id="notificationTitle">Éxito</div>
+        <div class="notification-message" id="notificationMessage">Mensaje</div>
+      </div>
+      <button class="notification-close" onclick="closeNotification()">×</button>
+    </div>
+  </div>
+
+  <!-- Loading overlay -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <p>Registrando usuario...</p>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('passwordToggleIcon');
+      const isVisible = passwordInput.type === 'text';
+      passwordInput.type = isVisible ? 'password' : 'text';
+      toggleIcon.textContent = isVisible ? '👁️' : '🙈';
+    }
+
+    function showNotification(title, message, type = 'success') {
+      const notification = document.getElementById('notification');
+      document.getElementById('notificationTitle').textContent = title;
+      document.getElementById('notificationMessage').textContent = message;
+      document.getElementById('notificationIcon').textContent = type === 'error' ? '❌' : '✅';
+      notification.className = `notification ${type}`;
+      notification.classList.add('show');
+      setTimeout(() => notification.classList.remove('show'), 4000);
+    }
+
+    function closeNotification() {
+      document.getElementById('notification').classList.remove('show');
+    }
+
+    function showLoading() {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function hideLoading() {
+      document.getElementById('loadingOverlay').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const password = document.getElementById('password').value;
+
+      let valid = true;
+      document.getElementById('nameError').textContent = '';
+      document.getElementById('emailError').textContent = '';
+      document.getElementById('phoneError').textContent = '';
+      document.getElementById('addressError').textContent = '';
+      document.getElementById('passwordError').textContent = '';
+
+      if (!name) {
+        document.getElementById('nameError').textContent = 'El nombre es requerido';
+        valid = false;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById('emailError').textContent = 'Correo inválido';
+        valid = false;
+      }
+      if (!phone || !/^[0-9]{7,15}$/.test(phone)) {
+        document.getElementById('phoneError').textContent = 'Número inválido';
+        valid = false;
+      }
+      if (!address) {
+        document.getElementById('addressError').textContent = 'La dirección es requerida';
+        valid = false;
+      }
+      if (!password || password.length < 6) {
+        document.getElementById('passwordError').textContent = 'La contraseña debe tener al menos 6 caracteres';
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      showLoading();
+
+      try {
+        const response = await fetch('https://ferreonline-production.up.railway.app/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, phone, address, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showNotification('Registro exitoso', 'Redirigiendo al inicio de sesión...');
+          setTimeout(() => window.location.href = 'login.html', 1500);
+        } else {
+          showNotification('Error al registrar', data.message || 'Inténtalo nuevamente', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showNotification('Error de red', 'No se pudo conectar con el servidor', 'error');
+      } finally {
+        hideLoading();
+      }
+    });
+  </script>
+</body>
+</html>

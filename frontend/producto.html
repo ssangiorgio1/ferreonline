@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Producto | FerreOnline</title>
+  <link rel="stylesheet" href="./css/style1.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="main-header">
+    <div class="header-container">
+      <div class="header-left">
+        <h1 class="site-title">
+          <span class="logo-icon">🔧</span>
+          <strong>FerreOnline</strong>
+        </h1>
+      </div>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">Inicio</a>
+        <a href="index.html#productos" class="nav-link">Productos</a>
+        <a href="#contacto" class="nav-link">Contacto</a>
+      </nav>
+      <div class="header-right">
+        <a href="./login.html" class="login-button">
+          <span class="login-icon">👤</span>
+          Iniciar Sesión
+        </a>
+        <a href="carrito.html" class="cart-button">
+          <div class="cart-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V17C17 18.1 16.1 19 15 19H9C7.9 19 7 18.1 7 17V13M17 13H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span id="contadorCarrito" class="cart-counter"></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <div class="breadcrumb-container">
+      <a href="index.html" class="breadcrumb-link">Inicio</a>
+      <span class="breadcrumb-separator">›</span>
+      <a href="index.html#productos" class="breadcrumb-link">Productos</a>
+      <span class="breadcrumb-separator">›</span>
+      <span class="breadcrumb-current" id="breadcrumbProducto">Producto</span>
+    </div>
+  </nav>
+
+  <!-- Loader -->
+  <div id="loader" class="loader-container">
+    <div class="loader-content">
+      <div class="spinner"></div>
+      <p>Cargando producto...</p>
+    </div>
+  </div>
+
+  <!-- Contenido del producto -->
+  <main id="producto-container" class="producto-main" style="display: none;">
+    <div class="producto-wrapper">
+      
+      <!-- Galería de imágenes -->
+      <div class="producto-gallery">
+        <div class="imagen-principal" id="imagenProducto">
+          <div class="imagen-placeholder">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 19 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z" fill="currentColor"/>
+            </svg>
+          </div>
+        </div>
+        <div class="zoom-indicator">
+          <span class="zoom-icon">🔍</span>
+          <span>Haz clic para ampliar</span>
+        </div>
+      </div>
+
+      <!-- Información del producto -->
+      <div class="producto-info">
+        <div class="producto-header">
+          <div class="producto-badge">Disponible</div>
+          <h1 id="nombreProducto" class="producto-titulo">Cargando...</h1>
+          <div class="producto-rating">
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <span class="rating-text">(4.5) • 127 reseñas</span>
+          </div>
+        </div>
+
+        <div class="precio-section">
+          <div class="precio-actual" id="precioProducto">$0</div>
+          <div class="precio-info">
+            <span class="precio-anterior">$0</span>
+            <span class="descuento-badge">-15%</span>
+          </div>
+          <div class="precio-beneficios">
+            <div class="beneficio">
+              <span class="beneficio-icon">🚚</span>
+              <span>Envío gratis en compras mayores a $50.000</span>
+            </div>
+            <div class="beneficio">
+              <span class="beneficio-icon">💳</span>
+              <span>12 cuotas sin interés</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="descripcion-section">
+          <h3>Descripción</h3>
+          <p id="descripcionProducto" class="producto-descripcion">Cargando descripción...</p>
+        </div>
+
+        <div class="compra-section">
+          <div class="cantidad-selector">
+            <label for="cantidad" class="cantidad-label">Cantidad:</label>
+            <div class="cantidad-controls">
+              <button type="button" class="cantidad-btn" onclick="cambiarCantidad(-1)">-</button>
+              <input type="number" id="cantidad" value="1" min="1" max="10" readonly>
+              <button type="button" class="cantidad-btn" onclick="cambiarCantidad(1)">+</button>
+            </div>
+          </div>
+
+          <div class="acciones-producto">
+            <button id="agregarCarrito" class="btn-agregar-carrito">
+              <span class="btn-icon">🛒</span>
+              <span>Añadir al carrito</span>
+            </button>
+            <button class="btn-favorito" onclick="toggleFavorito()">
+              <span class="favorito-icon">🤍</span>
+            </button>
+          </div>
+
+          <div class="producto-garantia">
+            <div class="garantia-item">
+              <span class="garantia-icon">✅</span>
+              <span>Garantía de 12 meses</span>
+            </div>
+            <div class="garantia-item">
+              <span class="garantia-icon">🔄</span>
+              <span>Devolución gratuita en 30 días</span>
+            </div>
+            <div class="garantia-item">
+              <span class="garantia-icon">🛡️</span>
+              <span>Compra protegida</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón volver -->
+    <div class="volver-section">
+      <a href="index.html" class="btn-volver">
+        <span class="volver-icon">←</span>
+        <span>Volver a productos</span>
+      </a>
+    </div>
+  </main>
+
+  <!-- Mensaje de error -->
+  <div id="error" class="error-container" style="display: none;">
+    <div class="error-content">
+      <div class="error-icon">⚠️</div>
+      <h2>Producto no encontrado</h2>
+      <p>Lo sentimos, no pudimos cargar la información del producto. Por favor, intenta nuevamente.</p>
+      <div class="error-actions">
+        <button onclick="cargarProducto()" class="btn-reintentar">Reintentar</button>
+        <a href="index.html" class="btn-volver-error">Volver al inicio</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notificación personalizada -->
+  <div id="customAlert" class="notification">
+    <div class="notification-content">
+      <div class="notification-icon">✅</div>
+      <div class="notification-text">
+        <div class="notification-title">¡Éxito!</div>
+        <div id="alertMessage" class="notification-message">Producto añadido al carrito</div>
+      </div>
+      <button class="notification-close" onclick="cerrarNotificacion()">×</button>
+    </div>
+  </div>
+
+  <!-- Modal de imagen ampliada -->
+  <div id="imageModal" class="image-modal" onclick="cerrarModal()">
+    <div class="modal-content">
+      <img id="modalImage" src="/placeholder.svg" alt="Imagen ampliada">
+      <button class="modal-close" onclick="cerrarModal()">×</button>
+    </div>
+  </div>
+
+  <script>
+    let productoActual = null;
+    let esFavorito = false;
+
+    function actualizarContadorCarrito() {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const totalCantidad = carrito.reduce((sum, prod) => sum + prod.cantidad, 0);
+
+      const contadorCarrito = document.getElementById('contadorCarrito');
+      if (contadorCarrito) {
+        contadorCarrito.textContent = totalCantidad > 0 ? totalCantidad : '';
+        contadorCarrito.style.display = totalCantidad > 0 ? 'flex' : 'none';
+      }
+    }
+
+    function mostrarNotificacion(titulo, mensaje, tipo = 'success') {
+      const alertElement = document.getElementById('customAlert');
+      const titleElement = alertElement.querySelector('.notification-title');
+      const messageElement = document.getElementById('alertMessage');
+      const iconElement = alertElement.querySelector('.notification-icon');
+      
+      titleElement.textContent = titulo;
+      messageElement.textContent = mensaje;
+      iconElement.textContent = tipo === 'success' ? '✅' : '⚠️';
+      
+      alertElement.classList.add('show');
+
+      setTimeout(() => {
+        alertElement.classList.remove('show');
+      }, 4000);
+    }
+
+    function cerrarNotificacion() {
+      document.getElementById('customAlert').classList.remove('show');
+    }
+
+    function cambiarCantidad(delta) {
+      const cantidadInput = document.getElementById('cantidad');
+      let nuevaCantidad = parseInt(cantidadInput.value) + delta;
+      
+      if (nuevaCantidad < 1) nuevaCantidad = 1;
+      if (nuevaCantidad > 10) nuevaCantidad = 10;
+      
+      cantidadInput.value = nuevaCantidad;
+    }
+
+    function toggleFavorito() {
+      esFavorito = !esFavorito;
+      const favoritoIcon = document.querySelector('.favorito-icon');
+      favoritoIcon.textContent = esFavorito ? '❤️' : '🤍';
+      
+      if (esFavorito) {
+        mostrarNotificacion('Favorito', 'Producto añadido a favoritos');
+      }
+    }
+
+    function abrirModal(imagenSrc) {
+      const modal = document.getElementById('imageModal');
+      const modalImage = document.getElementById('modalImage');
+      modalImage.src = imagenSrc;
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function cerrarModal() {
+      const modal = document.getElementById('imageModal');
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    async function cargarProducto() {
+      const loader = document.getElementById('loader');
+      const error = document.getElementById('error');
+      const contenedor = document.getElementById('producto-container');
+
+      try {
+        loader.style.display = 'flex';
+        error.style.display = 'none';
+        contenedor.style.display = 'none';
+
+        const params = new URLSearchParams(window.location.search);
+        const idProducto = params.get('id');
+
+        if (!idProducto) throw new Error('ID del producto no especificado.');
+
+        const response = await fetch(`https://ferreonline-production.up.railway.app/api/productos/${idProducto}`);
+
+        if (!response.ok) throw new Error('Producto no encontrado.');
+
+        const producto = await response.json();
+        productoActual = producto;
+
+        // Actualizar breadcrumb
+        document.getElementById('breadcrumbProducto').textContent = producto.nombre;
+
+        // Actualizar imagen
+        const imagenElement = document.getElementById('imagenProducto');
+        imagenElement.style.backgroundImage = `url('${producto.imagen}')`;
+        imagenElement.onclick = () => abrirModal(producto.imagen);
+
+        // Actualizar información
+        document.getElementById('nombreProducto').textContent = producto.nombre;
+        document.getElementById('precioProducto').textContent = `$${producto.precio}`;
+        document.getElementById('descripcionProducto').textContent = producto.descripcion || 'Descripción no disponible.';
+
+        // Actualizar título de la página
+        document.title = `${producto.nombre} | FerreOnline`;
+
+        loader.style.display = 'none';
+        contenedor.style.display = 'block';
+
+        // Animación de entrada
+        setTimeout(() => {
+          contenedor.style.opacity = '1';
+          contenedor.style.transform = 'translateY(0)';
+        }, 100);
+
+      } catch (err) {
+        console.error(err);
+        loader.style.display = 'none';
+        error.style.display = 'flex';
+      }
+    }
+
+    function agregarProductoAlCarrito() {
+      if (!productoActual) return;
+
+      const cantidadSeleccionada = parseInt(document.getElementById('cantidad').value, 10);
+      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+      const productoExistente = carrito.find(p => p.id === productoActual.id);
+
+      if (productoExistente) {
+        productoExistente.cantidad += cantidadSeleccionada;
+        mostrarNotificacion('Actualizado', `Cantidad actualizada en el carrito (${productoExistente.cantidad} unidades)`);
+      } else {
+        carrito.push({
+          id: productoActual.id,
+          nombre: productoActual.nombre,
+          precio: productoActual.precio,
+          descripcion: productoActual.descripcion,
+          imagen: productoActual.imagen,
+          cantidad: cantidadSeleccionada
+        });
+        mostrarNotificacion('¡Éxito!', `${productoActual.nombre} añadido al carrito`);
+      }
+
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      actualizarContadorCarrito();
+
+      // Animación del botón
+      const btn = document.getElementById('agregarCarrito');
+      btn.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        btn.style.transform = 'scale(1)';
+      }, 150);
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      actualizarContadorCarrito();
+      
+      // Agregar event listener al botón de carrito
+      const btnCarrito = document.getElementById('agregarCarrito');
+      if (btnCarrito) {
+        btnCarrito.addEventListener('click', agregarProductoAlCarrito);
+      }
+    });
+
+    // Cerrar modal con ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        cerrarModal();
+        cerrarNotificacion();
+      }
+    });
+
+    // Ejecutar carga inicial
+    cargarProducto();
+  </script>
+
+</body>
+</html>
